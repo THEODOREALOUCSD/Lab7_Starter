@@ -25,6 +25,8 @@ const router = new Router(function () {
    * This will only be two single lines
    * If you did this right, you should see the recipe cards just like last lab
    */
+  document.querySelector('section.section--recipe-cards').classList.add('shown');
+  document.querySelector('section.section--recipe-expand').classList.remove('shown');
 });
 
 window.addEventListener('DOMContentLoaded', init);
@@ -117,6 +119,22 @@ function createRecipeCards() {
    * all the recipes. (bonus - add the class 'hidden' to every recipe card with 
    * an index greater  than 2 in your for loop to make show more button functional)
    */
+  for(let i = 1; i < recipes.length; i++){
+    var newCard = document.createElement('recipeCard');
+    if (i > 2){
+      newCard.classList.add('hidden');
+    }
+    newCard.data = recipeData[recipes[i]];
+    var newPage = recipeData[recipes[i]]['page-name'];
+    router.addPage(newPage, function() {
+      document.querySelector('.section--recipe-cards').classList.remove('shown');
+      document.querySelector('.section--recipe-expand').classList.add('shown');
+      document.querySelector('recipe-expand').data = recipeData[recipes[i]];
+    });
+    bindRecipeCard(newCard, newPage);
+  
+    document.querySelector('.recipe-cards--wrapper').appendChild(newCard);
+  }
 }
 
 /**
@@ -172,6 +190,11 @@ function bindEscKey() {
    * if the escape key is pressed, use your router to navigate() to the 'home'
    * page. This will let us go back to the home page from the detailed page.
    */
+  document.addEventListener('keydown', event =>{
+    if(event.key == "Escape"){
+      router.navigate('home', false);
+    }
+  });
 }
 
 /**
@@ -193,4 +216,13 @@ function bindPopstate() {
    * so your navigate() function does not add your going back action to the history,
    * creating an infinite loop
    */
+  window.addEventListener('popstate', event =>{
+    
+    if(event.state != null){
+      router.navigate(event.state, true);
+    }
+    else{
+      router.navigate('home', true);
+    }
+  });
 }
