@@ -70,13 +70,14 @@ export class Router {
       console.error('Page does not exist!');
       return;
     }
-    var hash;
+
+    let hash = '';
     if(page != 'home'){
       hash = '#' + page;
     }
     if(statePopped == false && window.location.hash != hash){
       //FIX THIS 
-      var url = window.location + '/'
+      let url = window.location + '/';
       history.pushState(page, url + hash);
     }
     this[page]();

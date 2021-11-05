@@ -120,20 +120,20 @@ function createRecipeCards() {
    * an index greater  than 2 in your for loop to make show more button functional)
    */
   for(let i = 1; i < recipes.length; i++){
-    var newCard = document.createElement('recipeCard');
-    if (i > 2){
-      newCard.classList.add('hidden');
+    let aRecipeCard = document.createElement('recipe-card');
+    aRecipeCard.data = recipeData[recipes[i]];
+    if (i > 2) {
+      aRecipeCard.classList.add('hidden');
     }
-    newCard.data = recipeData[recipes[i]];
-    var newPage = recipeData[recipes[i]]['page-name'];
-    router.addPage(newPage, function() {
+    let apage = recipeData[recipes[i]]['page-name'];
+    router.addPage(apage, function() {
       document.querySelector('.section--recipe-cards').classList.remove('shown');
       document.querySelector('.section--recipe-expand').classList.add('shown');
       document.querySelector('recipe-expand').data = recipeData[recipes[i]];
     });
-    bindRecipeCard(newCard, newPage);
-  
-    document.querySelector('.recipe-cards--wrapper').appendChild(newCard);
+    bindRecipeCard(aRecipeCard, apage);
+
+    document.querySelector('.recipe-cards--wrapper').appendChild(aRecipeCard);
   }
 }
 
@@ -175,7 +175,7 @@ function bindShowMore() {
 function bindRecipeCard(recipeCard, pageName) {
   recipeCard.addEventListener('click', e => {
     if (e.path[0].nodeName == 'A') return;
-    router.navigate(pageName);
+    router.navigate(pageName, false);
   });
 }
 
@@ -218,7 +218,7 @@ function bindPopstate() {
    */
   window.addEventListener('popstate', event =>{
     
-    if(event.state != null){
+    if(event.state){
       router.navigate(event.state, true);
     }
     else{
