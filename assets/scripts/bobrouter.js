@@ -73,7 +73,7 @@ export class Router {
 
     let hash = '';
     if(page != 'home'){
-      hash = '#' + page;
+      hash = '#' + page; 
     }
     if(statePopped == false && window.location.hash != hash){
       //FIX THIS 
